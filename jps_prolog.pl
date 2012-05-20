@@ -108,3 +108,41 @@ writelist( []).
 writelist( [X | L])  :-
    tab( 2), write( X), nl,
    writelist( L).
+   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+covers(Rule, Example) :-
+    match_conseqent(Rule, Example, Bindings),
+    match_antecedent(Rule, Bindings).
+    
+match_antecedent([], _).
+
+match_antecedent([First | RestAntecedents], Bindings) :-
+    match_expr(First, Bindings, NewBindings),
+    conc(Bindings, NewBindings, Bindings1),
+    match_antecedent(RestAntecedents, Bindings1).
+    
+match_expr(PredExpr, Bindings, NewBindings) :-
+    op(Fact),
+    functor(Fact, F1, N1),
+    functor(PredExpr, F1, N1),
+    Fact =.. [_ | ArgList1],
+    PredExpr =.. [_ | ArgList2],
+    match_arg_lists(ArgList1, ArgList2, Bindings, [], NewBindings).
+    
+match_arg_lists([], [], _, NewBindings, NewBindings).
+    
+match_arg_lists([First1 | Rest1], [First2 | Rest2], Bindings, AccIn, NewBindings) :-
+    match_args(First1, First2, Bindings, AccIn, AccOut),
+    match_arg_lists(Rest1, Rest2, Bindings, AccOut, NewBindings).
+    
+match_args(Arg1, Arg2, Bindings, AccIn, AccIn). % TODO: to jest niemal na pewno źle
+
+match_args(Arg1, Arg2, Bindings, [First | AccIn], [First | AccOut]). % TODO: to jest niemal na pewno źle
+
+match_conseqent(PredExpr, Example, NewBindings) :- % TODO: może być źle bo liczba argumentów się nie zgadza z tym co na kartce
+    functor(Example, F1, N1),
+    functor(PredExpr, F1, N1),
+    Example =.. [_ | ArgList1],
+    PredExpr =.. [_ | ArgList2],
+    match_arg_lists(ArgList1, ArgList2, [], [], NewBindings).
