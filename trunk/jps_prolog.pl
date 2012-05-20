@@ -18,7 +18,7 @@ learn( Class)  :-
 %    Description covers exactly the examples of class Class in list Examples
 
 learn( Examples, Class, [])  :-
-   not member( example( Class, _ ), Examples).               % No example to cover 
+   not(member( example( Class, _ ), Examples)).               % No example to cover 
 
 learn( Examples, Class, [Conj | Conjs])  :-
    learn_conj( Examples, Class, Conj),
@@ -30,8 +30,8 @@ learn( Examples, Class, [Conj | Conjs])  :-
 %    no other class
 
 learn_conj( Examples, Class, [])  :-
-   not ( member( example( ClassX, _ ), Examples),            % There is no example
-   ClassX \== Class), !.                                     % of different class 
+   not((member( example( ClassX, _ ), Examples),             % There is no example
+   ClassX \== Class)), !.                                    % of different class 
 
 learn_conj( Examples, Class, [Cond | Conds])  :-
    choose_cond( Examples, Class, Cond),                      % Choose attribute value   
@@ -55,8 +55,8 @@ best( [ AV0/S0, AV1/S1 | AVSlist], AttVal)  :-
 
 filter( Examples, Cond, Examples1)  :-
    findall( example( Class, Obj),
-                ( member( example( Class, Obj), Examples), satisfy( Obj, Cond)),
-                Examples1).
+        ( member( example( Class, Obj), Examples), satisfy( Obj, Cond)),
+        Examples1).
 
 % remove( Examples, Conj, Examples1):
 %    removing from Examples those examples that are covered by Conj gives Examples1
@@ -71,9 +71,9 @@ remove( [E | Es], Conj, [E | Es1])  :-                         % Retain first ex
    remove( Es, Conj, Es1).
 
 satisfy( Object, Conj)  :-
-   not ( member( Att = Val, Conj),
+   not((member( Att = Val, Conj),
          member( Att = ValX, Object),
-         ValX \== Val).
+         ValX \== Val)).
 
 score( Examples, Class, AttVal, Score)  :-
    candidate( Examples, Class, AttVal),          % A suitable attribute value   
@@ -92,7 +92,7 @@ suitable( AttVal, Examples, Class)  :-
     % At least one negative example must not match AttVal
    member( example( ClassX, ObjX), Examples),
    ClassX \== Class,                                           % Negative example   
-   not satisfy( ObjX, [ AttVal]), !.                           % that does not match 
+   not(satisfy( ObjX, [ AttVal])), !.                          % that does not match 
 
 % count_pos( Examples, Class, N):
 %    N is the number of positive examples of Class
@@ -102,7 +102,6 @@ count_pos( [], _, 0).
 count_pos( [example( ClassX,_ ) | Examples], Class, N)  :-
    count_pos( Examples, Class, N1),
    ( ClassX = Class, !, N is N1 + 1; N = N1).
-
 
 writelist( []).
 
