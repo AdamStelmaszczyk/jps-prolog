@@ -11,24 +11,6 @@ op(woman(asia)).
 op(woman(marta)).
 op(woman(zosia)).
 
-op(samePerson(pawel,pawel)).
-op(samePerson(michal,michal)).
-op(samePerson(marcin,marcin)).
-op(samePerson(andrzej,andrzej)).
-op(samePerson(grzesiek,grzesiek)).
-op(samePerson(anna,anna)).
-op(samePerson(beata,beata)).
-op(samePerson(asia,asia)).
-op(samePerson(marta,marta)).
-op(samePerson(zosia,zosia)).
-
-op(couple(anna,pawel)).
-op(couple(pawel,anna)).
-op(couple(marta,andrzej)).
-op(couple(andrzej,marta)).
-op(couple(beata,marcin)).
-op(couple(marcin,beata)).
-
 op(parent(pawel,andrzej)).
 op(parent(anna,andrzej)).
 op(parent(pawel,beata)).
@@ -61,14 +43,6 @@ pos(grandma(anna,grzesiek)).
 pos(grandma(anna,asia)).
 pos(grandma(anna,michal)).
 
-pos(husband(pawel,anna)).
-pos(husband(andrzej,marta)).
-pos(husband(marcin,beata)).
-
-pos(wife(anna,pawel)).
-pos(wife(beata,marcin)).
-pos(wife(marta,danie)).
-
 pos(ancestor(pawel,beata)).
 pos(ancestor(pawel,andrzej)).
 pos(ancestor(pawel,zosia)).
@@ -90,18 +64,9 @@ pos(ancestor(marta,grzesiek)).
 pos(ancestor(andrzej,zosia)).
 pos(ancestor(andrzej,grzesiek)).
 
-pos(sibling(michal,asia)).
-pos(sibling(asia,michal)).
-pos(sibling(andrzej,beata)).
-pos(sibling(beata,andrzej)).
-pos(sibling(zosia,grzesiek)).
-pos(sibling(grzesiek,zosia)).
-
 predicate(man,1).
 predicate(woman,1).
 predicate(parent,2).
-%predicate(couple,2).
-
 
 
 %-----------------------------------------------procedury----------------------
@@ -381,7 +346,7 @@ remove([FirstEx|RestEx],Rule,[FirstEx|Rest]):-
 
 %	[pos(father(pawel, daniel)), pos(father(pawel, iwona)), pos(father(gienek, asia)), pos(father(gienek, michal)), pos(father(daniel, zosia)), neg(father(ania, ania)), neg(father(ania, anna))
 
-%-----------testy całości:
+%-----------testy całości:-----------------------
 %	learn(father(rule_var(1),rule_var(2)),E,R).
 
 %	learn(grandfa(rule_var(1),rule_var(2)),E,R).
