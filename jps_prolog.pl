@@ -80,7 +80,7 @@ learn(Conseq,H,Rules):-
 	genNegs(Conseq,ResList,N1),
 	negEx(Conseq,ResList,NegExamples),
 	append(PosExamples,NegExamples,Examples),
-	learn1(Examples,Conseq,Rules),
+	learn1(Examples,Conseq,Rules),!,
 	length(Examples,H).
 
 %sprawdza czy dotychczasowymi regułami pokryto wszystkie przykłady pozytywne, kończy działanie.
