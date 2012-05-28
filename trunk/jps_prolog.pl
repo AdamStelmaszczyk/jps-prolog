@@ -75,12 +75,12 @@ predicate(parent,2).
 %Dla zadanego predykatu zbiera przykłady pozytywne, generuje wszystkie negatywne i łączy w 1 listę - Examples,
 %następnie wywołuje learn1.
 learn(Conseq,H,Rules):-
-	assert(actLimit(2)),
+	assert(actLimit(1)),
 	bagof( pos(A), (pos(A),functor(Conseq,Name,C),functor(A,Name,C)), PosExamples),
 	genNegs(Conseq,ResList,N1),
 	negEx(Conseq,ResList,NegExamples),
 	append(PosExamples,NegExamples,Examples),
-	learn1(Examples,Conseq,Rules),!,
+	learn1(Examples,Conseq,Rules),
 	length(Examples,H).
 
 %sprawdza czy dotychczasowymi regułami pokryto wszystkie przykłady pozytywne, kończy działanie.
