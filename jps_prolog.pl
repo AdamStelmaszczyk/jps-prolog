@@ -24,6 +24,7 @@ op(parent(marta,zosia)).
 op(parent(andrzej,grzesiek)).
 op(parent(marta,grzesiek)).
 
+
 %----------------przykłady trenujące--------------
 
 pos(father(pawel,andrzej)).
@@ -117,7 +118,7 @@ learn_conj1(Examples,N,Limit,PartialRule,PartialRule,VarBound):-
 learn_conj1(Examples,N,Limit,rule(Conseq,Ants),Rule,VarBound):-
 	N1 is N+1,
 	N1=<Limit,
-	choose_ants(Examples,Conseq,FirstNAnts,VarBound),
+	choose_ants(Examples,rule(Conseq,Ants),FirstNAnts,VarBound),
 	member(PredExpr/NewVarBound,FirstNAnts),
 	not(member(PredExpr,Ants)),
 	append(Ants,[PredExpr],NewAnts),
@@ -128,8 +129,8 @@ learn_conj1(Examples,N,Limit,rule(Conseq,Ants),Rule,VarBound):-
 scoreListLength(6).	
 
 %buduje listę N kandydatów (zmienna zadawana - scoreListLength) na poprzednika reguły uszeregowanych wg kryteriów przydatności
-choose_ants(Examples,Conseq,FirstNAnts,VarBound):-	
-	findall(   Score-Ant/NewVarBound,   (  score(Examples,rule(Conseq,[Ant]),Ant,Score,VarBound,NewVarBound)  )  , AllAnts  ),
+choose_ants(Examples,rule(Conseq,Ants),FirstNAnts,VarBound):-	
+	findall(Score-NewAnt/NewVarBound, (score(Examples,rule(Conseq,Ants),NewAnt,Score,VarBound,NewVarBound)), AllAnts),
 	keysort(AllAnts,AllAntsSorted),
 	reverse(AllAntsSorted,AllAntsSortedRising),
 	scoreListLength(N),
@@ -146,9 +147,10 @@ takeFirstN(N,[Score-First|RestInput],[First|Rest]):-
 %---------------------------------------CANDIDATE-----------------------------
 
 %ocena przydatności dla każdego kandydata na poprzednika reguły
-score(Examples,rule(Conseq,[Ant]),Ant,Score,VarBound,NewVarBound):-
+score(Examples,rule(Conseq,Ants),Ant,Score,VarBound,NewVarBound):-
 	candidate(Ant,VarBound,NewVarBound),
-	filter(Examples,rule(Conseq,[Ant]),Rest),
+	append(Ants,[Ant],NewAnts),
+	filter(Examples,rule(Conseq,NewAnts),Rest),
 	length(Rest,CoveredCount),
 	countPositives(Rest,CoveredPositives),
 	CoveredPositives>0,
